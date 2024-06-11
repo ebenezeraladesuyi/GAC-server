@@ -7,10 +7,10 @@ import contactUsModel from "../model/ContactUsModel";
 export const sendContactMessage = async (req: Request, res: Response): Promise<void> => {
     try {
         // extract date from req.body
-        const { name, email, message } = req.body;
+        const { reason, name, email, message } = req.body;
 
         // save message to mongoDB
-        const contactMessage = await contactUsModel.create({name, email,message});
+        const contactMessage = await contactUsModel.create({reason, name, email, message});
 
         // send email to website owner
         const transporter = nodemailer.createTransport({
@@ -54,6 +54,7 @@ export const sendContactMessage = async (req: Request, res: Response): Promise<v
                 <body>
                     <div class="container">
                         <h2>New Message from Contact Form</h2>
+                        <p><strong>I have a</strong> ${reason}</p>
                         <p><strong>Name:</strong> ${name}</p>
                         <p><strong>Email:</strong> ${email}</p>
                         <p><strong>Message:</strong> ${message}</p>
