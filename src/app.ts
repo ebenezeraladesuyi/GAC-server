@@ -9,6 +9,7 @@ import contactUsRouter from "./routes/ContactUsRouter";
 
 const appConfig = (app: Application) => {
   app.use(express.json()).use(cors()).use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
 
   //routes
   app.use("/member" , memberRouter);

@@ -12,6 +12,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const ContactUsRouter_1 = __importDefault(require("./routes/ContactUsRouter"));
 const appConfig = (app) => {
     app.use(express_1.default.json()).use((0, cors_1.default)()).use(body_parser_1.default.json());
+    app.use(body_parser_1.default.urlencoded({ extended: false }));
     //routes
     app.use("/member", MemberRouter_1.default);
     app.use("/subscribe", SwysSubscribeRouter_1.default);
