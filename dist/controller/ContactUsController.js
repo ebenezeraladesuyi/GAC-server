@@ -17,7 +17,7 @@ const sendContactMessage = async (req, res) => {
             service: 'gmail',
             auth: {
                 user: 'clientvolatic@gmail.com',
-                pass: 'ipbawvwjdnyvjtmg' // Your Gmail password
+                pass: 'gjouvbbjdomflzib' // Your Gmail password
             }
         });
         const mailOptions = {
