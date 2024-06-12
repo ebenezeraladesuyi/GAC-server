@@ -17,7 +17,7 @@ export const sendContactMessage = async (req: Request, res: Response): Promise<v
             service: 'gmail',
             auth: {
                 user: 'clientvolatic@gmail.com', // Your Gmail email address
-                pass: 'gjouvbbjdomflzib' // Your Gmail password
+                pass: 'cycnkqypwdzosbce' // Your Gmail password
             }
         });
 
