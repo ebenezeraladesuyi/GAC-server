@@ -30,7 +30,7 @@ const registerMember = async (req, res) => {
     }
     catch (error) {
         return res.status(400).json({
-            message: "failed to get register member",
+            message: "failed to register member",
             data: error === null || error === void 0 ? void 0 : error.message,
         });
     }

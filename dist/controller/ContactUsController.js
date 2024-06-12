@@ -22,7 +22,7 @@ const sendContactMessage = async (req, res) => {
         });
         const mailOptions = {
             from: `Email: ${email}`,
-            to: 'volaticacademy@gmail.com',
+            to: 'graceaccesschurch@gmail.com',
             subject: 'New Message from Contact Form',
             // text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
             html: `

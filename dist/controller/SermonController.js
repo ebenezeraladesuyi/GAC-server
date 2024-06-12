@@ -7,7 +7,7 @@ exports.getAudioById = exports.getAllAudios = exports.createAudio = void 0;
 const SermonModel_1 = __importDefault(require("../model/SermonModel"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-// import aud from "../.././Uploads/audio"
+// import aud from "../../Uploads/audio"
 // upload audio function
 const createAudio = async (req, res) => {
     var _a;
@@ -64,6 +64,30 @@ const getAllAudios = async (req, res) => {
 };
 exports.getAllAudios = getAllAudios;
 // get one audio
+// export const getAudioById = async (req: Request, res: Response) => {
+//     try {
+//         const audio = await audioModel.findById(req.params.id);
+//         if (!audio) {
+//             return res.status(404).json({ message: "Audio not found" });
+//         }
+//         // Set the correct content type header
+//         res.setHeader('Content-Type', 'audio/mpeg');
+//         // Construct the path to the audio file
+//         const audioPath = path.join(__dirname, '../../Uploads/audio', audio.audio); // Adjust the path as needed
+//         // Check if the file exists
+//         if (!fs.existsSync(audioPath)) {
+//             console.error(`Audio file not found: ${audioPath}`);
+//             return res.status(404).json({ message: "Audio file not found" });
+//         }
+//         // Create a read stream for the audio file
+//         const audioStream = fs.createReadStream(audioPath);
+//         // Pipe the audio stream to the response
+//         audioStream.pipe(res);
+//     } catch (error) {
+//         console.error('Error fetching audio:', error);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//     }
+// };
 const getAudioById = async (req, res) => {
     try {
         const audio = await SermonModel_1.default.findById(req.params.id);

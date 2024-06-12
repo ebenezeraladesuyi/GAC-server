@@ -23,7 +23,7 @@ export const sendContactMessage = async (req: Request, res: Response): Promise<v
 
         const mailOptions = {
             from: `Email: ${email}`, // Your Gmail email address
-            to: 'volaticacademy@gmail.com', // Website owner's email address
+            to: 'graceaccesschurch@gmail.com', // Website owner's email address
             subject: 'New Message from Contact Form',
             // text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
             html: `
