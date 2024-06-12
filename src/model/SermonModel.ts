@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 export interface iAudio extends Document {
     title: string;
     // image: File | null;
-    audio: File | null;
+    audio: string;
     author: string;
 }
 
