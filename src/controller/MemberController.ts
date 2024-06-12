@@ -34,7 +34,7 @@ export const registerMember = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     return res.status(400).json({
-      message: "failed to get register member",
+      message: "failed to register member",
       data: error?.message,
     });
   }

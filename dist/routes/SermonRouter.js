@@ -9,4 +9,5 @@ const multer_1 = __importDefault(require("../config/multer"));
 const audioRouter = express_1.default.Router();
 audioRouter.post('/uploadaudio', multer_1.default, SermonController_1.createAudio);
 audioRouter.get('/allaudios', SermonController_1.getAllAudios);
+audioRouter.get('/getoneaudio/:id', SermonController_1.getAudioById);
 exports.default = audioRouter;
