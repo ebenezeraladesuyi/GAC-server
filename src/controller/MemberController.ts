@@ -9,6 +9,8 @@ export const registerMember = async (req: Request, res: Response) => {
       name,
       email,
       phoneNumber,
+      when,
+      how,
       why,
     } = req.body;
 
@@ -24,6 +26,8 @@ export const registerMember = async (req: Request, res: Response) => {
         name,
         email,
         phoneNumber,
+        when,
+        how,
         why,
       });
   

@@ -4,6 +4,8 @@ interface member {
   name: string;
   phoneNumber: string;
   email: string;
+  when: string;
+  how : string;
   why : string;
 }
 
