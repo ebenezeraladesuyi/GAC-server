@@ -20,22 +20,14 @@ export const createGalleryItem = async (req: Request, res: Response): Promise<vo
         const newGalleryItem = new galleryModel({ gacImage: result.secure_url });
         await newGalleryItem.save();
 
-        res.status(201).json(newGalleryItem);
+        // Fetch all gallery items sorted by createdAt timestamp in descending order
+        const allGalleryItems = await galleryModel.find().sort({ createdAt: -1 });
+
+        res.status(201).json(allGalleryItems);
     } catch (error : any) {
         res.status(500).json({ message: error.message });
     }
 };
-
-// export const createGalleryItem = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const { pics } = req.body; // Assuming pics is sent in the request body
-//         const newGalleryItem = new galleryModel({ pics });
-//         await newGalleryItem.save();
-//         res.status(201).json(newGalleryItem);
-//     } catch (error : any) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 
 
 // get all images

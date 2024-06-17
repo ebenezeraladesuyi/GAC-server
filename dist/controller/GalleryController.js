@@ -20,23 +20,15 @@ const createGalleryItem = async (req, res) => {
         // Create new gallery item with Cloudinary URL
         const newGalleryItem = new GalleryModel_1.default({ gacImage: result.secure_url });
         await newGalleryItem.save();
-        res.status(201).json(newGalleryItem);
+        // Fetch all gallery items sorted by createdAt timestamp in descending order
+        const allGalleryItems = await GalleryModel_1.default.find().sort({ createdAt: -1 });
+        res.status(201).json(allGalleryItems);
     }
     catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 exports.createGalleryItem = createGalleryItem;
-// export const createGalleryItem = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const { pics } = req.body; // Assuming pics is sent in the request body
-//         const newGalleryItem = new galleryModel({ pics });
-//         await newGalleryItem.save();
-//         res.status(201).json(newGalleryItem);
-//     } catch (error : any) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 // get all images
 const getGalleryItems = async (req, res) => {
     try {

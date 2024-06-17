@@ -9,6 +9,10 @@ const carSchema = new mongoose_1.default.Schema({
         type: String,
         // required: [true, "please, upload image"]
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 const galleryModel = mongoose_1.default.model("gacImage", carSchema);
 exports.default = galleryModel;
