@@ -10,6 +10,7 @@ const SwysSubscribeRouter_1 = __importDefault(require("./routes/SwysSubscribeRou
 const SermonRouter_1 = __importDefault(require("./routes/SermonRouter"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const ContactUsRouter_1 = __importDefault(require("./routes/ContactUsRouter"));
+const GalleryRouter_1 = __importDefault(require("./routes/GalleryRouter"));
 const appConfig = (app) => {
     app.use(express_1.default.json()).use((0, cors_1.default)()).use(body_parser_1.default.json());
     app.use(body_parser_1.default.urlencoded({ extended: false }));
@@ -18,6 +19,7 @@ const appConfig = (app) => {
     app.use("/subscribe", SwysSubscribeRouter_1.default);
     app.use("/audio", SermonRouter_1.default);
     app.use("/contact", ContactUsRouter_1.default);
+    app.use("/gallery", GalleryRouter_1.default);
     app.get("/", (req, res) => {
         return res.status(200).json({
             message: "default get"

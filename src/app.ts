@@ -5,6 +5,7 @@ import swysSubscribeRouter from "./routes/SwysSubscribeRouter";
 import audioRouter from "./routes/SermonRouter";
 import bodyParser from "body-parser";
 import contactUsRouter from "./routes/ContactUsRouter";
+import galleryRouter from "./routes/GalleryRouter";
 
 
 const appConfig = (app: Application) => {
@@ -16,6 +17,7 @@ const appConfig = (app: Application) => {
   app.use("/subscribe", swysSubscribeRouter)
   app.use("/audio", audioRouter)
   app.use("/contact", contactUsRouter)
+  app.use("/gallery", galleryRouter)
 
 
   app.get("/" , (req: Request , res:Response)=>{
