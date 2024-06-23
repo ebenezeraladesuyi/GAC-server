@@ -8,7 +8,7 @@ const MembersModel_1 = __importDefault(require("../model/MembersModel"));
 //register a user
 const registerMember = async (req, res) => {
     try {
-        const { name, email, phoneNumber, when, how, why, } = req.body;
+        const { name, email, phoneNumber, when, how, will, } = req.body;
         const checkExist = await MembersModel_1.default.findOne({ email });
         if (checkExist) {
             return res.status(500).json({
@@ -22,7 +22,7 @@ const registerMember = async (req, res) => {
                 phoneNumber,
                 when,
                 how,
-                why,
+                will,
             });
             return res.status(200).json({
                 message: "member registered",

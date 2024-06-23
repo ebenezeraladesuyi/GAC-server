@@ -11,7 +11,7 @@ export const registerMember = async (req: Request, res: Response) => {
       phoneNumber,
       when,
       how,
-      why,
+      will,
     } = req.body;
 
     const checkExist = await memberModel.findOne({ email });
@@ -28,7 +28,7 @@ export const registerMember = async (req: Request, res: Response) => {
         phoneNumber,
         when,
         how,
-        why,
+        will,
       });
   
       return res.status(200).json({

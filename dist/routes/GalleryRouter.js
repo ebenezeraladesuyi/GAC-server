@@ -9,4 +9,5 @@ const GalleryController_1 = require("../controller/GalleryController");
 const galleryRouter = express_1.default.Router();
 galleryRouter.post('/uploadimage', multerImage_1.default, GalleryController_1.createGalleryItem);
 galleryRouter.get('/getimages', GalleryController_1.getGalleryItems);
+galleryRouter.get('/deleteimage', GalleryController_1.deleteGalleryItem);
 exports.default = galleryRouter;
