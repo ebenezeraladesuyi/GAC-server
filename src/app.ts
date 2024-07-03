@@ -6,6 +6,7 @@ import audioRouter from "./routes/SermonRouter";
 import bodyParser from "body-parser";
 import contactUsRouter from "./routes/ContactUsRouter";
 import galleryRouter from "./routes/GalleryRouter";
+import paymentRouter from "./routes/PaymentRoutes";
 
 
 const appConfig = (app: Application) => {
@@ -18,6 +19,7 @@ const appConfig = (app: Application) => {
   app.use("/audio", audioRouter)
   app.use("/contact", contactUsRouter)
   app.use("/gallery", galleryRouter)
+  app.use("/payment", paymentRouter)
 
 
   app.get("/" , (req: Request , res:Response)=>{

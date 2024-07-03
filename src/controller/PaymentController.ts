@@ -1,27 +1,35 @@
 import { Request, Response } from 'express';
-import stripe from 'stripe';
+import Stripe from 'stripe';
+import dotenv from "dotenv";
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY!;
-const stripeClient = new stripe(stripeSecretKey);
+// const stripeSecretKey = process.env.STRIPE_SECRET_KEY!;
+// const stripeClient = new stripe(stripeSecretKey);
 
-// POST /api/payment - Process payment with Stripe
-export const processPayment = async (req: Request, res: Response): Promise<void> => {
+dotenv.config();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2024-04-10"
+})
+
+
+// function to create payment
+export const createPaymentIntent = async (req: Request, res: Response) => {
+
+  const {amount, currency } = req.body;
+
   try {
-    const { amount, currency, token } = req.body;
-
-    // Create a charge using the token received from the client
-    const charge = await stripeClient.charges.create({
+    const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency,
-      source: token.id,
-      description: 'Online offering for church', // Customize as needed
-    });
+      payment_method_types: ['card']
+    })
 
-    // Optionally, save the charge details to your database
+    res.status(200).json({client_secret: paymentIntent.client_secret});
 
-    res.status(200).json({ message: 'Payment successful', charge });
-  } catch (error : any) {
-    console.error('Error processing payment:', error);
-    res.status(500).json({ error: error.message });
+  } catch (error) {
+    console.error('Error creating payment intent', error);
+    res.status(500).json({error: 'failed to create payment intent'})
   }
-};
+} 
+
+

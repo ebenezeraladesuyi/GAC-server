@@ -8,7 +8,7 @@ const galleryRouter = express.Router();
 
 galleryRouter.post('/uploadimage', uploadImage, createGalleryItem);
 galleryRouter.get('/getimages', getGalleryItems);
-galleryRouter.get('/deleteimage', deleteGalleryItem);
+galleryRouter.get('/deleteimage/:id', deleteGalleryItem);
 
 
 
