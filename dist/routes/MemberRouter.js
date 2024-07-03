@@ -9,4 +9,5 @@ const memberRouter = express_1.default.Router();
 // userRouter.get("/registered" , getAllWorkers)
 memberRouter.post("/memberregister", MemberController_1.registerMember);
 memberRouter.get("/allmembersregistered", MemberController_1.getAllMembers);
+memberRouter.delete("/deletemember/:id", MemberController_1.deleteMember);
 exports.default = memberRouter;

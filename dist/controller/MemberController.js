@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllMembers = exports.registerMember = void 0;
+exports.deleteMember = exports.getAllMembers = exports.registerMember = void 0;
 const MembersModel_1 = __importDefault(require("../model/MembersModel"));
 //register a user
 const registerMember = async (req, res) => {
@@ -55,3 +55,20 @@ const getAllMembers = async (req, res) => {
     }
 };
 exports.getAllMembers = getAllMembers;
+// delete one member
+const deleteMember = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deleteForm = await MembersModel_1.default.findByIdAndDelete(id);
+        if (deleteForm) {
+            res.status(200).json({ message: "Form deleted" });
+        }
+        else {
+            res.status(404).json({ message: "form not found" });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+exports.deleteMember = deleteMember;
