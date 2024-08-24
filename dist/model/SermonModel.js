@@ -41,6 +41,6 @@ const AudioSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-});
+}, { timestamps: true });
 const audioModel = mongoose_1.default.model('Audio', AudioSchema);
 exports.default = audioModel;

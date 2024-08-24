@@ -50,7 +50,7 @@ export const createAudio = async (req: Request, res: Response) => {
 // get all audios
 export const getAllAudios = async (req: Request, res: Response)  => {
     try {
-       const allAudios = await audioModel.find()
+       const allAudios = await audioModel.find().sort({ createdAt: -1 })
        
        return res.status(200).json({
         message: "all audios gotton",

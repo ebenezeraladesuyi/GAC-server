@@ -49,7 +49,7 @@ exports.createAudio = createAudio;
 // get all audios
 const getAllAudios = async (req, res) => {
     try {
-        const allAudios = await SermonModel_1.default.find();
+        const allAudios = await SermonModel_1.default.find().sort({ createdAt: -1 });
         return res.status(200).json({
             message: "all audios gotton",
             data: allAudios
