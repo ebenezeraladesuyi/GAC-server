@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 export interface iSalvation extends Document {
     name: string;
     email: string;
-    phoneNumber: number;
+    phoneNumber: string;
     prayer: string;
 }
 
