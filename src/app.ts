@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import contactUsRouter from "./routes/ContactUsRouter";
 import galleryRouter from "./routes/GalleryRouter";
 import paymentRouter from "./routes/PaymentRoutes";
+import salvationRouter from "./routes/SalvationRoutes";
 
 
 const appConfig = (app: Application) => {
@@ -20,6 +21,7 @@ const appConfig = (app: Application) => {
   app.use("/contact", contactUsRouter)
   app.use("/gallery", galleryRouter)
   app.use("/payment", paymentRouter)
+  app.use("/salvation", salvationRouter)
 
 
   app.get("/" , (req: Request , res:Response)=>{

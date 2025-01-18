@@ -12,6 +12,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const ContactUsRouter_1 = __importDefault(require("./routes/ContactUsRouter"));
 const GalleryRouter_1 = __importDefault(require("./routes/GalleryRouter"));
 const PaymentRoutes_1 = __importDefault(require("./routes/PaymentRoutes"));
+const SalvationRoutes_1 = __importDefault(require("./routes/SalvationRoutes"));
 const appConfig = (app) => {
     app.use(express_1.default.json()).use((0, cors_1.default)()).use(body_parser_1.default.json());
     app.use(body_parser_1.default.urlencoded({ extended: false }));
@@ -22,6 +23,7 @@ const appConfig = (app) => {
     app.use("/contact", ContactUsRouter_1.default);
     app.use("/gallery", GalleryRouter_1.default);
     app.use("/payment", PaymentRoutes_1.default);
+    app.use("/salvation", SalvationRoutes_1.default);
     app.get("/", (req, res) => {
         return res.status(200).json({
             message: "default get"
