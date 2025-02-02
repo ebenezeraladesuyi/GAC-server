@@ -8,6 +8,7 @@ import contactUsRouter from "./routes/ContactUsRouter";
 import galleryRouter from "./routes/GalleryRouter";
 import paymentRouter from "./routes/PaymentRoutes";
 import salvationRouter from "./routes/SalvationRoutes";
+import ministryRouter from "./routes/AyeAweMinRoutes";
 
 
 const appConfig = (app: Application) => {
@@ -22,6 +23,7 @@ const appConfig = (app: Application) => {
   app.use("/gallery", galleryRouter)
   app.use("/payment", paymentRouter)
   app.use("/salvation", salvationRouter)
+  app.use("/minister", ministryRouter)
 
 
   app.get("/" , (req: Request , res:Response)=>{
