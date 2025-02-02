@@ -9,6 +9,10 @@ const AyoAweMinRegModel_1 = __importDefault(require("../model/AyoAweMinRegModel"
 const registerMinistry = async (req, res) => {
     try {
         const { title, firstName, middleName, lastName, email, phoneNumber, whatsapp, address, city, state, country, gender, ministryCall, other, whichMinistry, why, } = req.body;
+        if (!req.file) {
+            return res.status(400).json({ message: "Please upload an image" });
+        }
+        const ayoAweMinImage = req.file.path;
         // Check if ministry already exists
         const checkExist = await AyoAweMinRegModel_1.default.findOne({ email });
         if (checkExist) {
@@ -34,7 +38,9 @@ const registerMinistry = async (req, res) => {
             other,
             whichMinistry,
             why,
+            ayoAweMinImage
         });
+        await newMinistry.save();
         return res.status(201).json({
             message: "Minister registered successfully",
             data: newMinistry,

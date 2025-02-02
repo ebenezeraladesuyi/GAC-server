@@ -22,6 +22,12 @@ export const registerMinistry = async (req: Request, res: Response) => {
         whichMinistry,
         why,
       } = req.body;
+
+      if (!req.file) {
+        return res.status(400).json({ message: "Please upload an image" });
+    }
+
+    const ayoAweMinImage = req.file.path;
   
       // Check if ministry already exists
       const checkExist = await ministriesModel.findOne({ email });
@@ -50,8 +56,11 @@ export const registerMinistry = async (req: Request, res: Response) => {
         other,
         whichMinistry,
         why,
+        ayoAweMinImage
       });
-  
+      
+      await newMinistry.save();
+
       return res.status(201).json({
         message: "Minister registered successfully",
         data: newMinistry,

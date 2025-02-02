@@ -68,6 +68,14 @@ const ministriesSchema = new mongoose_1.default.Schema({
         type: String,
         required: [true, "Please explain why you want to join the training"],
     },
+    ayoAweMinImage: {
+        type: String,
+        required: [true, "please, upload image"]
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
-const ministriesModel = mongoose_1.default.model("GAC-Ministers", ministriesSchema);
+const ministriesModel = mongoose_1.default.model("ayoAweMinImage", ministriesSchema);
 exports.default = ministriesModel;

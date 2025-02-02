@@ -18,6 +18,8 @@ interface ministries {
     other?: string;
     whichMinistry: string;
     why: string;
+    gacImage: string | null;
+    createdAt: Date;
 }
 
 interface iMinistries extends ministries, mongoose.Document {}
@@ -86,8 +88,16 @@ const ministriesSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please explain why you want to join the training"],
     },
+    ayoAweMinImage: {
+        type: String,
+        required: [true, "please, upload image"]
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
-const ministriesModel = mongoose.model<iMinistries>("GAC-Ministers", ministriesSchema);
+const ministriesModel = mongoose.model<iMinistries>("ayoAweMinImage", ministriesSchema);
 
 export default ministriesModel;
