@@ -9,7 +9,7 @@ interface ministries {
     email: string;
     phoneNumber: string;
     whatsapp?: string;
-    address: string;
+    // address: string;
     city: string;
     state: string;
     country: string;
@@ -51,10 +51,10 @@ const ministriesSchema = new mongoose.Schema({
     whatsapp: {
         type: String,
     },
-    address: {
-        type: String,
-        required: [true, "Please enter your address"],
-    },
+    // address: {
+    //     type: String,
+    //     required: [true, "Please enter your address"],
+    // },
     city: {
         type: String,
         required: [true, "Please enter your city"],

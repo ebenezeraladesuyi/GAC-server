@@ -31,10 +31,10 @@ const ministriesSchema = new mongoose_1.default.Schema({
     whatsapp: {
         type: String,
     },
-    address: {
-        type: String,
-        required: [true, "Please enter your address"],
-    },
+    // address: {
+    //     type: String,
+    //     required: [true, "Please enter your address"],
+    // },
     city: {
         type: String,
         required: [true, "Please enter your city"],

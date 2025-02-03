@@ -8,7 +8,9 @@ const AyoAweMinRegModel_1 = __importDefault(require("../model/AyoAweMinRegModel"
 // Create a new Ministry entry
 const registerMinistry = async (req, res) => {
     try {
-        const { title, firstName, middleName, lastName, email, phoneNumber, whatsapp, address, city, state, country, gender, ministryCall, other, whichMinistry, why, } = req.body;
+        const { title, firstName, middleName, lastName, email, phoneNumber, whatsapp, 
+        // address,
+        city, state, country, gender, ministryCall, other, whichMinistry, why, } = req.body;
         if (!req.file) {
             return res.status(400).json({ message: "Please upload an image" });
         }
@@ -29,7 +31,7 @@ const registerMinistry = async (req, res) => {
             email,
             phoneNumber,
             whatsapp,
-            address,
+            // address,
             city,
             state,
             country,
