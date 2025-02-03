@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteMinistry = exports.updateMinistry = exports.getMinistryById = exports.getAllMinistries = exports.registerMinistry = void 0;
+exports.deleteMinistry = exports.updateMinistry = exports.getMinistryById = exports.getAllMinisters = exports.registerMinistry = void 0;
 const AyoAweMinRegModel_1 = __importDefault(require("../model/AyoAweMinRegModel"));
 // Create a new Ministry entry
 const registerMinistry = async (req, res) => {
@@ -57,12 +57,13 @@ const registerMinistry = async (req, res) => {
 };
 exports.registerMinistry = registerMinistry;
 // Get all Ministry entries
-const getAllMinistries = async (req, res) => {
+const getAllMinisters = async (req, res) => {
     try {
         const ministries = await AyoAweMinRegModel_1.default.find();
         res.status(200).json({
             success: true,
             data: ministries,
+            message: "All minister gotten",
         });
     }
     catch (error) {
@@ -73,7 +74,7 @@ const getAllMinistries = async (req, res) => {
         });
     }
 };
-exports.getAllMinistries = getAllMinistries;
+exports.getAllMinisters = getAllMinisters;
 // Get a single Ministry entry by ID
 const getMinistryById = async (req, res) => {
     try {

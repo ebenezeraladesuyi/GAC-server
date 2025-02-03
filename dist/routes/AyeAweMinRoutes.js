@@ -8,4 +8,5 @@ const AyoAweMinController_1 = require("../controller/AyoAweMinController");
 const AyoAweMinImage_1 = __importDefault(require("../config/AyoAweMinImage"));
 const ministryRouter = express_1.default.Router();
 ministryRouter.post("/registerminister", AyoAweMinImage_1.default, AyoAweMinController_1.registerMinistry);
+ministryRouter.get("/allministers", AyoAweMinController_1.getAllMinisters);
 exports.default = ministryRouter;

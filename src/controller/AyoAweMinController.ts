@@ -74,12 +74,13 @@ export const registerMinistry = async (req: Request, res: Response) => {
   };
 
 // Get all Ministry entries
-export const getAllMinistries = async (req: Request, res: Response) => {
+export const getAllMinisters = async (req: Request, res: Response) => {
     try {
         const ministries = await ministriesModel.find();
         res.status(200).json({
             success: true,
             data: ministries,
+            message: "All minister gotten",
         });
     } catch (error) {
         res.status(500).json({
