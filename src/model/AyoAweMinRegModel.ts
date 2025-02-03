@@ -18,7 +18,7 @@ interface ministries {
     other?: string;
     whichMinistry: string;
     why: string;
-    gacImage: string | null;
+    ayoAweMinImage: string | null;
     createdAt: Date;
 }
 
