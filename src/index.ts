@@ -7,7 +7,7 @@ const app: Application = express();
 // const app = express();
 
 
-app.use("/Uploads", express.static(path.join(__dirname, "Uploads")));
+app.use("/Uploads/images", express.static(path.join(__dirname, "Uploads/images")));
 
 appConfig(app)
 dbConfig()
