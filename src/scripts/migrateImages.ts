@@ -1,56 +1,74 @@
-import cloudinary from "../config/cloudinary";  
+import cloudinary from "../config/cloudinary";
 import mongoose from "mongoose";
-import fs from "fs";
-import path from "path";
-import dotenv from "dotenv";
 import ministriesModel from "../model/AyoAweMinRegModel";
 import dbConfig from "../config/db";
+import fs from "fs";
+import path from "path";
+import { Readable } from "stream"; // Importing the stream module
 
-dotenv.config();  // Load environment variables
-
-// Connect to MongoDB
-// const startDB = async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URI as string);
-//     console.log("✅ Connected to MongoDB");
-//   } catch (error) {
-//     console.error("❌ Error connecting to MongoDB:", error);
-//     process.exit(1);
-//   }
-// };
-
-// Migration function
-const migrateImages = async () => {
-  await dbConfig();  // Ensure DB is connected
-
-  console.log("🚀 Starting image migration...");
-  const ministries = await ministriesModel.find();
-
-  for (const ministry of ministries) {
-    if (ministry.ayoAweMinImage && !ministry.ayoAweMinImage.startsWith("http")) {
-      const localPath = path.join(__dirname, "../../", ministry.ayoAweMinImage);  // Adjust path to image
-
-      if (fs.existsSync(localPath)) {
-        try {
-          console.log(`📤 Uploading: ${ministry.ayoAweMinImage}`);
-          const result = await cloudinary.uploader.upload(localPath, { folder: "ministries" });
-
-          // Update database with new Cloudinary URL
-          await ministriesModel.findByIdAndUpdate(ministry._id, { ayoAweMinImage: result.secure_url });
-
-          console.log(`✅ Updated: ${ministry.email} with ${result.secure_url}`);
-        } catch (err) {
-          console.error(`❌ Failed to upload ${ministry.ayoAweMinImage}`, err);
+// Function to upload the image buffer to Cloudinary
+const uploadToCloudinary = async (imageBuffer: Buffer, filename: string) => {
+  return new Promise<string | null>((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder: "ministries", public_id: filename },
+      (error, result) => {
+        if (error) {
+          console.error("❌ Cloudinary Upload Failed:", error);
+          return reject(null);
         }
-      } else {
-        console.warn(`⚠️ File not found: ${localPath}`);
+        resolve(result?.secure_url || null); // Ensure we handle the possible undefined result
       }
+    );
+
+    const bufferStream = new Readable();
+    bufferStream.push(imageBuffer);
+    bufferStream.push(null); // Signaling the end of the stream
+    bufferStream.pipe(uploadStream); // Uploading the buffer as a stream
+  });
+};
+
+const migrateImages = async () => {
+  await dbConfig();
+
+  console.log("🔍 Fetching ministers from the database...");
+  const ministers = await ministriesModel.find();
+
+  for (const minister of ministers) {
+    if (!minister.ayoAweMinImage) {
+      console.warn(`🚨 No image path found for minister ${minister._id}`);
+      continue;
+    }
+
+    const imageBase64 = minister.ayoAweMinImage;
+    const matches = imageBase64.match(/^data:image\/([a-zA-Z]*);base64,([^\"]*)/);
+    if (matches && matches.length === 3) {
+      const imageData = matches[2];
+      const buffer = Buffer.from(imageData, "base64");
+      const filename = `minister_${minister._id}.jpg`; // Customize filename as needed
+
+      try {
+        const cloudinaryUrl = await uploadToCloudinary(buffer, filename);
+        if (cloudinaryUrl) {
+          await ministriesModel.findByIdAndUpdate(minister._id, {
+            ayoAweMinImage: cloudinaryUrl,
+          });
+          console.log(`✅ Updated Image: ${cloudinaryUrl}`);
+        } else {
+          console.error(`❌ Failed to upload image for minister ${minister._id}`);
+        }
+      } catch (error) {
+        console.error(`❌ Error during migration for minister ${minister._id}:`, error);
+      }
+    } else {
+      console.warn(`🚨 Invalid image data for minister ${minister._id}`);
     }
   }
 
-  console.log("✅ Migration complete!");
-  mongoose.disconnect();  // Close DB connection
+  console.log("✅ Migration completed. Closing database connection...");
+  await mongoose.disconnect();
 };
 
-// Run the migration
-migrateImages();
+migrateImages().catch((error) => {
+  console.error("❌ Migration failed:", error);
+  mongoose.disconnect(); // Ensure DB closes on failure
+});

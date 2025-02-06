@@ -129,7 +129,7 @@ export const registerMinistry = async (req: Request, res: Response) => {
         other,
         whichMinistry,
         why,
-        ayoAweMinImage: result.secure_url, // Store Cloudinary URL instead of local path
+        ayoAweMinImage: result.secure_url, 
       });
   
       await newMinistry.save();
