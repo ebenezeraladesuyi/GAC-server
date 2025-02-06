@@ -5,16 +5,81 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteMinistry = exports.updateMinistry = exports.getMinistryById = exports.getAllMinisters = exports.registerMinistry = void 0;
 const AyoAweMinRegModel_1 = __importDefault(require("../model/AyoAweMinRegModel"));
+const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 // Create a new Ministry entry
+// export const registerMinistry = async (req: Request, res: Response) => {
+//     try {
+//       const {
+//         title,
+//         firstName,
+//         middleName,
+//         lastName,
+//         email,
+//         phoneNumber,
+//         whatsapp,
+//         // address,
+//         city,
+//         state,
+//         country,
+//         gender,
+//         ministryCall,
+//         other,
+//         whichMinistry,
+//         why,
+//       } = req.body;
+//       if (!req.file) {
+//         return res.status(400).json({ message: "Please upload an image" });
+//     }
+//     const ayoAweMinImage = req.file.path;
+//       // Check if ministry already exists
+//       const checkExist = await ministriesModel.findOne({ email });
+//       if (checkExist) {
+//         return res.status(400).json({
+//           message: "This email has already been used",
+//         });
+//       }
+//       // Create a new ministry entry
+//       const newMinistry = await ministriesModel.create({
+//         title,
+//         firstName,
+//         middleName,
+//         lastName,
+//         email,
+//         phoneNumber,
+//         whatsapp,
+//         // address,
+//         city,
+//         state,
+//         country,
+//         gender,
+//         ministryCall,
+//         other,
+//         whichMinistry,
+//         why,
+//         ayoAweMinImage
+//       });
+//       await newMinistry.save();
+//       return res.status(201).json({
+//         message: "Minister registered successfully",
+//         data: newMinistry,
+//       });
+//     } catch (error: any) {
+//       return res.status(400).json({
+//         message: "Failed to register minister",
+//         error: error?.message,
+//       });
+//     }
+//   };
 const registerMinistry = async (req, res) => {
     try {
-        const { title, firstName, middleName, lastName, email, phoneNumber, whatsapp, 
-        // address,
-        city, state, country, gender, ministryCall, other, whichMinistry, why, } = req.body;
+        const { title, firstName, middleName, lastName, email, phoneNumber, whatsapp, city, state, country, gender, ministryCall, other, whichMinistry, why, } = req.body;
         if (!req.file) {
             return res.status(400).json({ message: "Please upload an image" });
         }
-        const ayoAweMinImage = req.file.path;
+        // Upload the image to Cloudinary
+        const result = await cloudinary_1.default.uploader.upload(req.file.path, {
+            folder: "ministries", // Cloudinary folder name
+        });
         // Check if ministry already exists
         const checkExist = await AyoAweMinRegModel_1.default.findOne({ email });
         if (checkExist) {
@@ -22,7 +87,7 @@ const registerMinistry = async (req, res) => {
                 message: "This email has already been used",
             });
         }
-        // Create a new ministry entry
+        // Create a new ministry entry with Cloudinary image URL
         const newMinistry = await AyoAweMinRegModel_1.default.create({
             title,
             firstName,
@@ -31,7 +96,6 @@ const registerMinistry = async (req, res) => {
             email,
             phoneNumber,
             whatsapp,
-            // address,
             city,
             state,
             country,
@@ -40,7 +104,7 @@ const registerMinistry = async (req, res) => {
             other,
             whichMinistry,
             why,
-            ayoAweMinImage
+            ayoAweMinImage: result.secure_url, // Store Cloudinary URL instead of local path
         });
         await newMinistry.save();
         return res.status(201).json({

@@ -1,7 +1,79 @@
 import { Request, Response } from "express";
 import ministriesModel from "../model/AyoAweMinRegModel";
+import cloudinary from "../config/cloudinary";
 
 // Create a new Ministry entry
+// export const registerMinistry = async (req: Request, res: Response) => {
+//     try {
+//       const {
+//         title,
+//         firstName,
+//         middleName,
+//         lastName,
+//         email,
+//         phoneNumber,
+//         whatsapp,
+//         // address,
+//         city,
+//         state,
+//         country,
+//         gender,
+//         ministryCall,
+//         other,
+//         whichMinistry,
+//         why,
+//       } = req.body;
+
+//       if (!req.file) {
+//         return res.status(400).json({ message: "Please upload an image" });
+//     }
+
+//     const ayoAweMinImage = req.file.path;
+  
+//       // Check if ministry already exists
+//       const checkExist = await ministriesModel.findOne({ email });
+  
+//       if (checkExist) {
+//         return res.status(400).json({
+//           message: "This email has already been used",
+//         });
+//       }
+  
+//       // Create a new ministry entry
+//       const newMinistry = await ministriesModel.create({
+//         title,
+//         firstName,
+//         middleName,
+//         lastName,
+//         email,
+//         phoneNumber,
+//         whatsapp,
+//         // address,
+//         city,
+//         state,
+//         country,
+//         gender,
+//         ministryCall,
+//         other,
+//         whichMinistry,
+//         why,
+//         ayoAweMinImage
+//       });
+      
+//       await newMinistry.save();
+
+//       return res.status(201).json({
+//         message: "Minister registered successfully",
+//         data: newMinistry,
+//       });
+//     } catch (error: any) {
+//       return res.status(400).json({
+//         message: "Failed to register minister",
+//         error: error?.message,
+//       });
+//     }
+//   };
+
 export const registerMinistry = async (req: Request, res: Response) => {
     try {
       const {
@@ -12,7 +84,6 @@ export const registerMinistry = async (req: Request, res: Response) => {
         email,
         phoneNumber,
         whatsapp,
-        // address,
         city,
         state,
         country,
@@ -22,12 +93,15 @@ export const registerMinistry = async (req: Request, res: Response) => {
         whichMinistry,
         why,
       } = req.body;
-
+  
       if (!req.file) {
         return res.status(400).json({ message: "Please upload an image" });
-    }
-
-    const ayoAweMinImage = req.file.path;
+      }
+  
+      // Upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "ministries", // Cloudinary folder name
+      });
   
       // Check if ministry already exists
       const checkExist = await ministriesModel.findOne({ email });
@@ -38,7 +112,7 @@ export const registerMinistry = async (req: Request, res: Response) => {
         });
       }
   
-      // Create a new ministry entry
+      // Create a new ministry entry with Cloudinary image URL
       const newMinistry = await ministriesModel.create({
         title,
         firstName,
@@ -47,7 +121,6 @@ export const registerMinistry = async (req: Request, res: Response) => {
         email,
         phoneNumber,
         whatsapp,
-        // address,
         city,
         state,
         country,
@@ -56,11 +129,11 @@ export const registerMinistry = async (req: Request, res: Response) => {
         other,
         whichMinistry,
         why,
-        ayoAweMinImage
+        ayoAweMinImage: result.secure_url, // Store Cloudinary URL instead of local path
       });
-      
+  
       await newMinistry.save();
-
+  
       return res.status(201).json({
         message: "Minister registered successfully",
         data: newMinistry,
