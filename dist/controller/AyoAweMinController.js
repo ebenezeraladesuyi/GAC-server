@@ -104,7 +104,7 @@ const registerMinistry = async (req, res) => {
             other,
             whichMinistry,
             why,
-            ayoAweMinImage: result.secure_url, // Store Cloudinary URL instead of local path
+            ayoAweMinImage: result.secure_url,
         });
         await newMinistry.save();
         return res.status(201).json({

@@ -9,6 +9,7 @@ import galleryRouter from "./routes/GalleryRouter";
 import paymentRouter from "./routes/PaymentRoutes";
 import salvationRouter from "./routes/SalvationRoutes";
 import ministryRouter from "./routes/AyeAweMinRoutes";
+import elevationRouter from "./routes/ElevationRoutes";
 
 
 const appConfig = (app: Application) => {
@@ -24,6 +25,7 @@ const appConfig = (app: Application) => {
   app.use("/payment", paymentRouter)
   app.use("/salvation", salvationRouter)
   app.use("/minister", ministryRouter)
+  app.use("/elevation", elevationRouter)
 
 
   app.get("/" , (req: Request , res:Response)=>{

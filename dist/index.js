@@ -9,7 +9,7 @@ const app_1 = __importDefault(require("./app"));
 const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 // const app = express();
-app.use("/Uploads", express_1.default.static(path_1.default.join(__dirname, "Uploads")));
+app.use("/Uploads/images", express_1.default.static(path_1.default.join(__dirname, "Uploads/images")));
 (0, app_1.default)(app);
 (0, db_1.default)();
 const PORT = 2021;

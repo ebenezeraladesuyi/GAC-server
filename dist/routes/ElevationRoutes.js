@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const ElevationController_1 = require("../controller/ElevationController");
+const elevationRouter = (0, express_1.Router)();
+elevationRouter.post('/create', ElevationController_1.createStudent);
+elevationRouter.get('/getall', ElevationController_1.getAllStudents);
+elevationRouter.get('/getone/:id', ElevationController_1.getStudentById);
+elevationRouter.put('/updateone/:id', ElevationController_1.updateStudent);
+elevationRouter.delete('/delete/:id', ElevationController_1.deleteStudent);
+exports.default = elevationRouter;

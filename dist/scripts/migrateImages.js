@@ -5,49 +5,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
-const dotenv_1 = __importDefault(require("dotenv"));
 const AyoAweMinRegModel_1 = __importDefault(require("../model/AyoAweMinRegModel"));
 const db_1 = __importDefault(require("../config/db"));
-dotenv_1.default.config(); // Load environment variables
-// Connect to MongoDB
-// const startDB = async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URI as string);
-//     console.log("✅ Connected to MongoDB");
-//   } catch (error) {
-//     console.error("❌ Error connecting to MongoDB:", error);
-//     process.exit(1);
-//   }
-// };
-// Migration function
+// Upload an image from a URL to Cloudinary
+const uploadToCloudinary = async (imageUrl) => {
+    try {
+        const result = await cloudinary_1.default.uploader.upload(imageUrl, {
+            resource_type: "auto",
+            folder: "ministries", // Folder in Cloudinary
+        });
+        return result.secure_url; // Return the secure URL of the uploaded image
+    }
+    catch (error) {
+        console.error("❌ Cloudinary Upload Failed:", error);
+        return null;
+    }
+};
 const migrateImages = async () => {
-    await (0, db_1.default)(); // Ensure DB is connected
-    console.log("🚀 Starting image migration...");
-    const ministries = await AyoAweMinRegModel_1.default.find();
-    for (const ministry of ministries) {
-        if (ministry.ayoAweMinImage && !ministry.ayoAweMinImage.startsWith("http")) {
-            const localPath = path_1.default.join(__dirname, "../../", ministry.ayoAweMinImage); // Adjust path to image
-            if (fs_1.default.existsSync(localPath)) {
-                try {
-                    console.log(`📤 Uploading: ${ministry.ayoAweMinImage}`);
-                    const result = await cloudinary_1.default.uploader.upload(localPath, { folder: "ministries" });
-                    // Update database with new Cloudinary URL
-                    await AyoAweMinRegModel_1.default.findByIdAndUpdate(ministry._id, { ayoAweMinImage: result.secure_url });
-                    console.log(`✅ Updated: ${ministry.email} with ${result.secure_url}`);
-                }
-                catch (err) {
-                    console.error(`❌ Failed to upload ${ministry.ayoAweMinImage}`, err);
-                }
+    await (0, db_1.default)(); // Connect to the database
+    console.log("🔍 Fetching ministers from the database...");
+    const ministers = await AyoAweMinRegModel_1.default.find();
+    for (const minister of ministers) {
+        if (!minister.ayoAweMinImage) {
+            console.warn(`🚨 No image path found for minister ${minister._id}`);
+            continue; // Skip if no image URL is found
+        }
+        const imageUrl = minister.ayoAweMinImage; // Get the image URL from the database
+        console.log(`🔍 Processing image for minister ${minister._id}:`, imageUrl);
+        try {
+            // Upload the image URL to Cloudinary
+            const cloudinaryUrl = await uploadToCloudinary(imageUrl);
+            if (cloudinaryUrl) {
+                // Update the database with the new Cloudinary URL
+                await AyoAweMinRegModel_1.default.findByIdAndUpdate(minister._id, {
+                    ayoAweMinImage: cloudinaryUrl,
+                });
+                console.log(`✅ Updated Image: ${cloudinaryUrl}`);
             }
             else {
-                console.warn(`⚠️ File not found: ${localPath}`);
+                console.error(`❌ Failed to upload image for minister ${minister._id}`);
             }
         }
+        catch (error) {
+            console.error(`🚨 Error uploading image for minister ${minister._id}:`, error);
+        }
     }
-    console.log("✅ Migration complete!");
-    mongoose_1.default.disconnect(); // Close DB connection
+    console.log("✅ Migration completed. Closing database connection...");
+    await mongoose_1.default.disconnect(); // Close the database connection
 };
-// Run the migration
-migrateImages();
+migrateImages().catch((error) => {
+    console.error("❌ Migration failed:", error);
+    mongoose_1.default.disconnect(); // Ensure DB closes on failure
+});
